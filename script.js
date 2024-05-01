@@ -1,24 +1,15 @@
 // console.log("Hello world!");
 let options = ['Rock', 'Paper', 'Scissors'];
 let validOptions = ['rock', 'paper', 'scissors']
-
+let currentUserChoice;
 function getCompChoice() {
     let randomIndex = Math.floor(Math.random() * 3);
     return validOptions[randomIndex];
 };
 
-// function processInput() {
-//     let inputFromUser = document.getElementById("userInput");
-//     let inputValue = inputFromUser.ariaValueMax;
-//     return inputValue
-
-// }
-
-// function playerSelection() {
-// }
-
-
-// console.log(processInput())
+const compDiv = document.querySelector("#comp");
+const userDiv = document.querySelector("#user");
+const currentWinnerDiv = document.querySelector("#currentWinner")
 
 function getUserInput() {
     let userChoice = prompt("Rock, Paper or Scissors?");
@@ -27,7 +18,7 @@ function getUserInput() {
 
 let playerScore = 0
 let compScore = 0
-
+mostRecentWinner = "";
 
 function printResults(comp, user) {
     let winStatement = `You Win! You chose ${user} and the computer chose ${comp}.`;
@@ -54,17 +45,44 @@ function printResults(comp, user) {
         compScore ++;
     }
 }
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        currentUserChoice = button.id;
+        userDiv.textContent = "You choose: " + currentUserChoice;
+        console.log("You have chosen " + currentUserChoice);
+        playGame();
+    });
+});
+
 
 function playGame() {
-    let compAnswer = getCompChoice();
-    let userAnswer = getUserInput()
-    printResults(compAnswer, userAnswer)
+    userAnswer = currentUserChoice;
+    compAnswer = getCompChoice();
+    compDiv.textContent = "The computer choose: " + compAnswer;
+    let previousUserScore = playerScore;
+    let previousCompScore = compScore;
+    
+    printResults(compAnswer, userAnswer);
+    if (playerScore == previousUserScore && previousCompScore == compScore){
+        mostRecentWinner = "Tie";
+    }
+    else if (playerScore > previousUserScore){
+        mostRecentWinner = "user";
+    }
+    else if (compScore > previousCompScore){
+        mostRecentWinner = "comp";
+    }
+    currentWinnerDiv.textContent = createWinnerStatement(mostRecentWinner);
+
     
 }
-while (playerScore + compScore < 5) {
-    playGame()
-    console.log(playerScore)
-    console.log(compScore)
+
+function createWinnerStatement(winner){
+    if (winner == "Tie") return "This round was a tie.";
+    else if (winner == "user") return "You win this round!";
+    else if (winner == "comp") return "The computer wins this round!";
+    else return "";
 }
 console.log(`The final score is ${playerScore} for you and ${compScore} for the computer!`)
 
