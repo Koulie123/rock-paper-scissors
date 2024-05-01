@@ -10,6 +10,9 @@ function getCompChoice() {
 const compDiv = document.querySelector("#comp");
 const userDiv = document.querySelector("#user");
 const currentWinnerDiv = document.querySelector("#currentWinner")
+const playerScoreSpan = document.querySelector("#player-score");
+const compScoreSpan = document.querySelector("#comp-score");
+const winnerDiv = document.querySelector("#winner-div");
 
 function getUserInput() {
     let userChoice = prompt("Rock, Paper or Scissors?");
@@ -51,10 +54,9 @@ buttons.forEach((button) => {
         currentUserChoice = button.id;
         userDiv.textContent = "You choose: " + currentUserChoice;
         console.log("You have chosen " + currentUserChoice);
-        playGame();
+        if (!checkForWinner()) {playGame()};
     });
 });
-
 
 function playGame() {
     userAnswer = currentUserChoice;
@@ -74,8 +76,33 @@ function playGame() {
         mostRecentWinner = "comp";
     }
     currentWinnerDiv.textContent = createWinnerStatement(mostRecentWinner);
+    playerScoreSpan.textContent = playerScore;
+    compScoreSpan.textContent = compScore;
+    if (checkForWinner()){
+        winnerDiv.textContent = "The winner is of the game is " + whoIsWinner();
+        if (winnerDiv == null) {console.log("winnerdiv is null.")}
+    };
+}
 
-    
+
+
+let winner;
+
+function checkForWinner(){
+    if (playerScore >= 5 || compScore >= 5){
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+function whoIsWinner(){
+    if (playerScore > compScore){
+        return "Player";
+    }else {
+        return "computer";
+    }
 }
 
 function createWinnerStatement(winner){

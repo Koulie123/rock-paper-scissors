@@ -7,3 +7,7 @@
     border-width: 2px;
     padding:0.1em;
 }
+#winner-div {
+    font-weight: strong;
+    font-size: 1.3em;
+}
